@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <title>画布操作</title>
+</head>
+<style>
+  #canvas{
+    /*border:1px solid #ccc;*/
+    display: block;
+    position: absolute;
+    margin:auto;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+  }
+  #canvas1{
+    /*border:1px solid #ccc;*/
+    display: block;
+    position: absolute;
+    margin:auto;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+  }
+</style>
+<body>
+  <!-- 画布大小只能通过 属性设置 不能用css -->
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <canvas id="canvas1" width="300" height="300"></canvas>
+  <img src="" alt="" id="clock">
+   <script>
+     var canvas = document.querySelector('#canvas');
+     var canvass = document.querySelector('#canvas1');
+     var ctx = canvas.getContext('2d');
+     var ctt = canvass.getContext('2d');
+     ctx.strokeStyle = 'rgb(166, 236, 19)';
+     var r = function(deg){
+       return Math.PI/180*deg;
+     }
+     //线
+    //  ctx.beginPath();
+    //  ctx.moveTo(0,0);
+    //  ctx.lineTo(600,600);
+    //  ctx.moveTo(600,0);
+    //  ctx.lineTo(0,600);
+    //  ctx.stroke();
+    //  ctx.closePath();
+    //  //矩形
+    //  ctx.rect(150,30,300,100);
+    //  ctx.fill();
+    //  ctx.rect(150,470,300,100);
+    //  ctx.stroke();
+    //  //圆
+    //  ctx.beginPath();
+    //  ctx.arc(150,300,100,0,(Math.PI/180)*360);
+    //  ctx.fill();
+    //  ctx.closePath();
+     //
+    //  ctx.beginPath();
+    //  ctx.arc(450,300,100,0,(Math.PI/180)*360);
+    //  ctx.stroke();
+    //  ctx.closePath();
+     //
+    //  ctx.beginPath();
+    //  ctx.arc(450,300,50,0,(Math.PI/180)*270);
+    //  ctx.lineTo(450,300);
+    //  ctx.lineTo(500,300);
+    //  ctx.fill();
+    //  ctx.closePath();
+    //位置
+    // ctx.save();
+    // ctx.translate(300,300);
+    //
+    // ctx.beginPath();
+    // ctx.moveTo(0,0)
+    // ctx.lineTo(100,100)
+    // ctx.stroke();
+    // ctx.closePath();
+    // ctx.restore();
+    //
+    // ctx.beginPath();
+    // ctx.moveTo(100,0)
+    // ctx.lineTo(100,100)
+    // ctx.stroke();
+    // ctx.closePath();
+    //表
+    // ctx.beginPath();
+    // ctx.moveTo(300,100);
+    // ctx.lineTo(300,250);
+    // ctx.moveTo(300,350);
+    // ctx.lineTo(300,430);
+    // ctx.stroke();
+    // ctx.closePath();
+    // ctx.beginPath();
+    // ctx.arc(300,300,50,0,(Math.PI/180)*360)
+    // ctx.stroke();
+    // ctx.closePath();
+    //钟表练习
+    // ctx.save();
+    // ctx.translate(300,300);
+    // ctx.beginPath();
+    // for(var i = 0;i < 12; i++){
+    //   ctx.rotate((Math.PI/180)*30);
+    //   ctx.moveTo(0,0);
+    //   ctx.lineTo(0,-100);
+    // }
+    // ctx.closePath();
+    // ctx.stroke();
+    // ctx.restore();
+      // ctx.clearRect(0,0,600,600);
+      //钟表实例
+      ctx.save();
+      ctx.translate(300,300);
+      //画表盘
+      // ctx.beginPath();
+      // ctx.closePath();
+      var img = new Image();
+      img.src = 'clock.png';
+      img.onload = function(){
+        var ptrn = ctx.createPattern(img,'no-repeat');
+        ctx.fillStyle = ptrn;
+        ctx.translate(150,150);
+        ctx.arc(150,150,150,0,r(360))
+        ctx.fill();
+      }
+      var huabiao = function(){
+        ctt.clearRect(0,0,300,300);
+        // 画刻度
+         ctt.save();
+         ctt.stroke();
+       ctt.restore();
+     //   //秒针
+       var now = new Date();
+       var second = now.getSeconds();
+       ctt.save();
+       ctt.translate(150,150)
+       ctt.beginPath();
+       ctt.rotate(r(second*6))
+       ctt.arc(0,0,10,0,r(360));
+       ctt.fillStyle ='#fff';
+       ctt.fill();
+       ctt.moveTo(0,-10);
+       ctt.lineTo(0,-130);
+       ctt.lineWidth = 4;
+       ctt.strokeStyle = 'rgb(233, 5, 66)';
+       ctt.moveTo(0,10);
+       ctt.lineTo(0,30);
+       ctt.closePath();
+       ctt.stroke();
+       ctt.restore();
+     //   //分针
+       var m = now.getMinutes();
+       var s = now.getSeconds();
+       var de = (m*60+s)/3600*360
+       ctt.save();
+       ctt.translate(150,150);
+       ctt.rotate(r(de));
+       ctt.beginPath();
+       ctt.arc(0,0,10,0,r(360));
+       ctt.moveTo(0,-10);
+       ctt.lineTo(0,-100)
+       ctt.moveTo(0,10);
+       ctt.lineTo(0,30)
+       ctt.lineWidth = 7;
+       ctt.closePath();
+       ctt.stroke();
+       ctt.restore();
+     //   //时针
+       var h = now.getHours();
+       var m = now.getMinutes();
+       var s = now.getSeconds();
+       var dg =(h*3600+m*60+s)/43200*360;
+       ctt.save();
+       ctt.translate(150,150);
+       ctt.rotate(r(dg));
+       ctt.beginPath();
+       ctt.arc(0,0,10,0,r(360));
+       ctt.moveTo(0,-10);
+       ctt.lineTo(0,-60)
+       ctt.moveTo(0,10);
+       ctt.lineTo(0,25)
+       ctt.closePath();
+       ctt.lineWidth = 7;
+       ctt.stroke();
+       ctt.restore();
+      }
+      ctx.restore();
+    huabiao();
+    var t = setInterval(huabiao,1000);
+   </script>
+
+</body>
+</html>
